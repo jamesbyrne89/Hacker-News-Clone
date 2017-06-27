@@ -8,32 +8,35 @@ const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 
+//
+
 let url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 
-const list = [
-  {
-    title: 'React',
-    url: 'https://facebook.github.io/react/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: 'Redux',
-    url: 'https://github.com/reactjs/redux',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-];
 
 function isSearched (searchTerm) {
   return function(item) {
     return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
   };
 };
+
+function convertUnixTime(unix) {
+	// Create a new JavaScript Date object based on the timestamp
+// multiplied by 1000 so that the argument is in milliseconds, not seconds.
+var date = new Date(unix*1000);
+// Hours part from the timestamp
+var hours = date.getHours();
+// Minutes part from the timestamp
+var minutes = "0" + date.getMinutes();
+// Seconds part from the timestamp
+var seconds = "0" + date.getSeconds();
+
+if (hours < 10) {
+	hours = "0"+hours;
+}
+// Will display time in 10:30:23 format
+var formattedTime = hours + ':' + minutes.substr(-2);
+return formattedTime;
+}
 
 // Main App component
 class App extends Component {
@@ -50,8 +53,21 @@ constructor(props) {
   this.onDismiss = this.onDismiss.bind(this);
 }
 
+setRecentStories(result) {
+	this.setState({result})
+}
+
 setSearchTopStories(result) {
 	this.setState({result});
+}
+
+fetchRecentStories() {
+	fetch('https://hn.algolia.com/api/v1/search_by_date?tags=story')
+	.then(response => response.json())
+	.then((result) => {
+		this.setRecentStories(result)
+		console.log(result)
+	});
 }
 
 fetchSearchTopStories(searchTerm) {
@@ -64,8 +80,8 @@ fetchSearchTopStories(searchTerm) {
 }
 
 componentDidMount() {
-	const { searchTerm } = this.state;
-	this.fetchSearchTopStories(searchTerm);
+	console.log('component did mount')
+	this.fetchRecentStories();
 }
 
 onSearchChange(e) {
@@ -149,16 +165,7 @@ const Table = ({list, pattern, onDismiss}) => {
 				<span>{item.author}</span>
 				<span>{item.num_comments}</span>
 				<span>{item.points}</span>
-				<span>{item.created_at_i}</span>
-				<span>
-					<button
-						onClick={() => onDismiss(item.objectID)}
-						type="button"
-						className="button-inline"
-					>
-						Dismiss
-					</button>
-				</span>
+				<span>{convertUnixTime(item.created_at_i)}</span>
 			</div>
 			)}
 			</main>
