@@ -125,10 +125,12 @@ onDismiss(id) {
 const Search = ({ value, onChange, children }) => {
 	return (
 	<header className="site-header">
+	<div id="logo">hn.</div>
 		<form>
 			{children} <input
 			type="text"
 			value={value}
+			placeholder="Search"
 			className="search-bar"
 			onChange={onChange}
 			/>
@@ -152,20 +154,19 @@ const Table = ({list, pattern, onDismiss}) => {
 		return 0;
 	}
 
-	console.log(filtered.sort(compare))
 	return (
 					<main className="table">
 			{ 
 				
 				filtered.map(item =>
 				<div key={item.objectID} className="table-row">
-				<span>
 					<a href={item.url}>{item.title}</a>
-				</span>
+				<div>
 				<span>{item.author}</span>
 				<span>{item.num_comments}</span>
 				<span>{item.points}</span>
-				<span>{convertUnixTime(item.created_at_i)}</span>
+				<span>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
+				</div>
 			</div>
 			)}
 			</main>
