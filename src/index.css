@@ -30,7 +30,7 @@ body {
 	padding: 1em;
 	text-align: left;
 	margin-top: 10px;
-	border-bottom: solid 1px #a9a9a9;
+	border-bottom: solid 1px #4C4C4E;
 }
 
 .button-inline {
@@ -43,7 +43,7 @@ body {
 }
 
 .site-header {
-	background-color: #595959;
+	background-color: #4C4C4E;
 	height: 75px;
 	margin: 0;
 	display: flex;
@@ -59,6 +59,7 @@ body {
 	width: 180px;
 	border: none;
 }
+
 span {
 	margin: 10px;
 }
@@ -72,6 +73,12 @@ a:link {
 
 a:link:hover {
 	color: #FBB829;
+}
+
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.075) inset, 0 0 8px rgba(255, 255, 255, 0.6);
+    outline: 0 none;
 }
 
 #logo {
