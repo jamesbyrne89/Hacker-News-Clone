@@ -22,19 +22,19 @@ function isSearched (searchTerm) {
 function convertUnixTime(unix) {
 	// Create a new JavaScript Date object based on the timestamp
 // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-var date = new Date(unix*1000);
+let date = new Date(unix*1000);
 // Hours part from the timestamp
-var hours = date.getHours();
+let hours = date.getHours();
 // Minutes part from the timestamp
-var minutes = "0" + date.getMinutes();
+let minutes = "0" + date.getMinutes();
 // Seconds part from the timestamp
-var seconds = "0" + date.getSeconds();
+let seconds = "0" + date.getSeconds();
 
 if (hours < 10) {
 	hours = "0"+hours;
 }
 // Will display time in 10:30:23 format
-var formattedTime = hours + ':' + minutes.substr(-2);
+let formattedTime = hours + ':' + minutes.substr(-2);
 return formattedTime;
 }
 
@@ -45,14 +45,18 @@ constructor(props) {
   this.state = {
   	result: null,
   	searchTerm: DEFAULT_QUERY,
+  	page: 0,
   };
 
   this.setSearchTopStories = this.setSearchTopStories.bind(this);
   this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
+  this.fetchRecentStories = this.fetchRecentStories.bind(this);
   this.onSearchChange = this.onSearchChange.bind(this);
+  this.onPageChange = this.onPageChange.bind(this);
   this.onDismiss = this.onDismiss.bind(this);
 }
 
+// Sets state on initial load with most recent stories from API call
 setRecentStories(result) {
 	this.setState({result})
 }
@@ -61,8 +65,9 @@ setSearchTopStories(result) {
 	this.setState({result});
 }
 
-fetchRecentStories() {
-	fetch('https://hn.algolia.com/api/v1/search_by_date?tags=story')
+// Gets most recent stories from API
+fetchRecentStories(page = 0) {
+	fetch(`https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${page}`)
 	.then(response => response.json())
 	.then((result) => {
 		this.setRecentStories(result)
@@ -71,6 +76,7 @@ fetchRecentStories() {
 }
 
 fetchSearchTopStories(searchTerm) {
+	console.log('fetchSearchTopStories')
 	fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
 	.then(response => response.json())
 	.then((result) => {
@@ -80,11 +86,16 @@ fetchSearchTopStories(searchTerm) {
 }
 
 componentDidMount() {
-	console.log('component did mount')
 	this.fetchRecentStories();
 }
 
+onPageChange() {
+this.setState({page: this.state.page + 1})
+this.fetchRecentStories(this.state.page);
+}
+
 onSearchChange(e) {
+	console.log('onSearchChange')
 this.setState({searchTerm: e.target.value});
 }
 
@@ -114,7 +125,8 @@ onDismiss(id) {
 	      pattern={searchTerm}
 	      onDismiss={this.onDismiss}
 	      />
-
+	      <PageNavigation
+	      onClick={this.onPageChange} />
  	</div>
 	);
 	}
@@ -139,7 +151,16 @@ const Search = ({ value, onChange, children }) => {
 	);
 }
 
+// Page buttons
 
+const PageNavigation = ({onClick}) => {
+	return(
+	<div className="btn-wrapper">
+		<button className="page-nav-btn">Previous</button>
+		<button className="page-nav-btn" onClick={onClick}>Next</button>
+	</div>
+	)
+}
 
 
 // Table and button component

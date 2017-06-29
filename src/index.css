@@ -21,7 +21,7 @@ body {
 
 .table {
 	margin-top: 50px;
-	margin-bottom: 100px;
+	margin-bottom: 50px;
 }
 
 .table-row {
@@ -40,6 +40,17 @@ body {
 	color: #fff;
 	padding: 0.75em 1em;
 	border-radius: 5px;
+}
+
+.btn-wrapper {
+	margin-bottom: 100px;
+}
+
+.page-nav-btn {
+	border: solid 2px #fff;
+	background: none;
+	color: #fff;
+	margin: 10px;
 }
 
 .site-header {
