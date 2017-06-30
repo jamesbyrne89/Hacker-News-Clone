@@ -1,43 +1,44 @@
 import React, { Component } from 'react';
-import App from './App';
 
 
-
+const parseHTML = function(html) {
+    var el = document.createElement('div');
+    el.innerHTML = html;
+    return el.textContent;
+}
 
 // Comment thread
 // 
 class Comments extends Component {
-constructor(props) {
-super(props);
-
-}
 
 
 render() {
+	console.log(this.props.list)
 	return (
-		<AllComments />
+		<AllComments list={this.props.list}/>
 		)
-}
+	}
 }
 
 const AllComments = ({ list }) => {
-	console.log('list: ', list)
 	return (
-			<main className="table">
+		<main className="table">
+		<button className="back-btn">Back</button>
+			{ list.map(item =>
 
-				<div className="table-row">
-					<div className="article-title-wrapper">{list}Comments will be displayed here
-						<span className="article-url"></span>
-					</div>
+				<div key={item.objectID} className="table-row">
 				<div>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
+				<span className="comment-author">{item.author}</span>
+				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
+				
 				</div>
 			</div>
-			</main>
+			)}
+		</main>
 		)
 }
 
 export default Comments;
+
+
+

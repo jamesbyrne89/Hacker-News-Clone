@@ -16,60 +16,7 @@ body {
 }
 
 
-.page {
-	width: 100vw;
-	text-align: center;
-	padding: 0;
-	margin: 0;
-}
-
-.table {
-	margin-top: 50px;
-	margin-bottom: 50px;
-}
-
-.table-row {
-	display: flex;
-	justify-content: space-between;
-	padding: 1em;
-	text-align: left;
-	margin-top: 10px;
-	border-bottom: solid 1px #4C4C4E;
-}
-
-.article-title-wrapper {
-	font-family: 'lato', sans-serif;
-	width: 50%;
-}
-
-.article-url {
-	display: block;
-	margin: 0;
-	color: #4C4C4E;
-}
-
-.button-inline {
-	margin: 0px 10px;
-	background: rgb(254,85,70);
-	border: none;
-	color: #fff;
-	padding: 0.75em 1em;
-	border-radius: 5px;
-}
-
-.btn-wrapper {
-	margin-bottom: 100px;
-}
-
-.page-nav-btn {
-	border: solid 2px #fff;
-	background: none;
-	color: #fff;
-	margin: 10px;
-	padding: 1em;
-	width: 75px;
-	cursor: pointer;
-}
+/* Header */
 
 .site-header {
 	background-color: #4C4C4E;
@@ -89,32 +36,6 @@ body {
 	border: none;
 }
 
-.comments {
-	cursor: pointer;
-}
-
-span {
-	margin: 10px;
-}
-
-a:link {
-	color: #fff;
-	text-decoration: none;
-	font-weight: bold;
-	transition: color 0.3s;
-	cursor: pointer;
-}
-
-a:link:hover {
-	color: #45FCF8;
-}
-
-textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.075) inset, 0 0 8px rgba(255, 255, 255, 0.6);
-    outline: 0 none;
-}
-
 #logo {
 	font-family: 'inconsolata', sans-serif;
 	font-size: 3rem;
@@ -127,3 +48,141 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 	align-items: center;
 	padding: 0 0.125em 0 0.25em;
 }
+
+
+/* Posts table */
+
+.page {
+	width: 100vw;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+
+.table {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	padding: 1em 5vw;
+}
+
+.table-row {
+	display: flex;
+	justify-content: space-between;
+	padding: 1em;
+	text-align: left;
+	margin-top: 10px;
+	border-bottom: solid 1px #4C4C4E;
+}
+
+.article-title-wrapper {
+	font-family: 'lato', sans-serif;
+	width: 50%;
+}
+
+.article-url {
+	display: block;
+	margin: 0;
+	color: #a9a9a9;
+}
+
+.button-inline {
+	margin: 0px 10px;
+	background: rgb(254,85,70);
+	border: none;
+	color: #fff;
+	padding: 0.75em 1em;
+	border-radius: 5px;
+}
+
+.btn-wrapper {
+	margin-bottom: 100px;
+}
+
+.page-nav-btn, .back-btn {
+	border: solid 2px #fff;
+	background: none;
+	color: #fff;
+	margin: 10px;
+	padding: 1em;
+	width: 75px;
+	cursor: pointer;
+}
+
+.post-info-wrapper {
+	width: 40%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.comments {
+	cursor: pointer;
+	transition: color 0.3s;
+	margin: 0 20px;
+	width: 20%;
+}
+
+.author {
+	width: 20%;
+}
+
+.points {
+	margin: 0 20px;
+	width: 10%;
+}
+
+
+a:link, a:visited {
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	transition: color 0.3s;
+	cursor: pointer;
+}
+
+a:hover, .comments:hover {
+	color: #FF9500create ;
+}
+
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.075) inset, 0 0 8px rgba(255, 255, 255, 0.6);
+    outline: 0 none;
+}
+
+
+
+
+/* Comments */
+
+.comment-author {
+	display: block;
+	color: #FF9500;
+	font-family: 'inconsolata', sans-serif;
+	margin-left: 0;
+	margin-bottom: 10px;
+}
+
+.comment-author::before {
+	content: '';
+	display: inline-block;
+	height: 8px;
+	width: 8px;
+	background: #FF9500;
+	left: 10px;
+	margin-right: 6px;
+}
+
+.comment-text {
+	display: block;
+	line-height: 1.25;
+	font-family: 'lato', sans-serif;
+	max-width: 1200px;
+}
+
+
+
+
+
+
+
+
