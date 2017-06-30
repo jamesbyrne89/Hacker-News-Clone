@@ -1,5 +1,9 @@
+
+
 * {
 	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 
@@ -33,6 +37,17 @@ body {
 	border-bottom: solid 1px #4C4C4E;
 }
 
+.article-title-wrapper {
+	font-family: 'lato', sans-serif;
+	width: 50%;
+}
+
+.article-url {
+	display: block;
+	margin: 0;
+	color: #4C4C4E;
+}
+
 .button-inline {
 	margin: 0px 10px;
 	background: rgb(254,85,70);
@@ -51,6 +66,9 @@ body {
 	background: none;
 	color: #fff;
 	margin: 10px;
+	padding: 1em;
+	width: 75px;
+	cursor: pointer;
 }
 
 .site-header {
@@ -71,6 +89,10 @@ body {
 	border: none;
 }
 
+.comments {
+	cursor: pointer;
+}
+
 span {
 	margin: 10px;
 }
@@ -80,10 +102,11 @@ a:link {
 	text-decoration: none;
 	font-weight: bold;
 	transition: color 0.3s;
+	cursor: pointer;
 }
 
 a:link:hover {
-	color: #FBB829;
+	color: #45FCF8;
 }
 
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
@@ -93,10 +116,11 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 }
 
 #logo {
+	font-family: 'inconsolata', sans-serif;
 	font-size: 3rem;
 	font-weight: bold;
 	margin-right: 200px;
-	background-color: #FBB829;
+	background: linear-gradient(to right, #FF9500, #FFC451);
 	letter-spacing: -1px;
 	height: 75px;
 	display: flex;
