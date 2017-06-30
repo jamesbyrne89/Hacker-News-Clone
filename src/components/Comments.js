@@ -21,6 +21,21 @@ render() {
 }
 
 const AllComments = ({ list }) => {
+
+function commentChild(props, item) {
+	return <span className='comment-text'>{parseHTML(item.comment_text)}</span>
+}
+
+function checkForChild(props, item) {
+	const isChild = props.isChild;
+	if (isChild) {
+		return <ChildComment />;
+	}
+	else {
+		return <Comment />
+	}
+}
+
 	return (
 		<main className="table">
 		<button className="back-btn">Back</button>
@@ -29,12 +44,31 @@ const AllComments = ({ list }) => {
 				<div key={item.objectID} className="table-row">
 				<div>
 				<span className="comment-author">{item.author}</span>
-				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
+				<checkForChild isChild={false} />
+				
 				
 				</div>
 			</div>
 			)}
 		</main>
+		)
+}
+
+const Comment = ({ list }) {
+	return (
+		<span className='comment-text'>
+			{parseHTML(item.comment_text)}
+		</span>
+
+		)
+}
+
+const ChildComment = ({ list }) {
+	return (
+		<span className='comment-text'>
+			{parseHTML(item.comment_text)}
+		</span>
+
 		)
 }
 
