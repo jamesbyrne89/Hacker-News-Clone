@@ -10,66 +10,63 @@ const parseHTML = function(html) {
 // Comment thread
 // 
 class Comments extends Component {
+constructor(props) {
+super(props)
 
+this.state = {
+	result: null,
+	}
+
+
+this.fetchComments = this.fetchComments.bind(this);
+this.setStories = this.setStories.bind(this);
+}
+
+
+
+
+// Updates result of fetch
+setStories(result) {
+	this.setState({result});
+	console.log(this.state)
+};
+
+fetchComments(page = 0) {
+	fetch(`https://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=points>=25&page=${page}`)
+  	.then(response => response.json())
+  	.then((result) => {
+  		this.setState(result)
+  		console.log(result)
+  	});
+};
+
+componentWillMount() {
+	console.log('comments will mount')
+	this.fetchComments();
+	console.log('comments will mount')
+}
 
 render() {
-	console.log(this.props.list)
-	return (
-		<AllComments list={this.props.list}/>
-		)
-	}
-}
-
-const AllComments = ({ list }) => {
-
-function commentChild(props, item) {
-	return <span className='comment-text'>{parseHTML(item.comment_text)}</span>
-}
-
-function checkForChild(props, item) {
-	const isChild = props.isChild;
-	if (isChild) {
-		return <ChildComment />;
-	}
-	else {
-		return <Comment />
-	}
-}
+	console.log(this.state)
+let list = this.state.list;
 
 	return (
 		<main className="table">
 		<button className="back-btn">Back</button>
-			{ list.map(item =>
+	{ list.map(item =>
 
-				<div key={item.objectID} className="table-row">
+			<div key={item.objectID} className="table-row">
 				<div>
-				<span className="comment-author">{item.author}</span>
-				<checkForChild isChild={false} />
-				
-				
+					<span className="comment-author">{item.author}</span>
+					<span className='comment-text'>{parseHTML(item.comment_text)}</span>	
 				</div>
 			</div>
+
 			)}
 		</main>
 		)
 }
 
-const Comment = ({ list }) {
-	return (
-		<span className='comment-text'>
-			{parseHTML(item.comment_text)}
-		</span>
-
-		)
-}
-
-const ChildComment = ({ list }) {
-	return (
-		<span className='comment-text'>
-			{parseHTML(item.comment_text)}
-		</span>
-
-		)
 }
 
 export default Comments;

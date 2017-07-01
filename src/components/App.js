@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import Comments from './Comments';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
 
 const DEFAULT_QUERY = '';
 
@@ -9,7 +15,6 @@ const PARAM_SEARCH = 'query=';
 
 
 // let url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
-
 
 function isSearched (searchTerm) {
   return function(item) {
@@ -63,7 +68,6 @@ constructor(props) {
   this.fetchRecentStories = this.fetchRecentStories.bind(this);
   this.onSearchChange = this.onSearchChange.bind(this);
   this.onPageChange = this.onPageChange.bind(this);
-  this.showComments = this.showComments.bind(this);
 };
 
 
@@ -72,24 +76,13 @@ setStories(result) {
 	this.setState({result});
 };
 
-// Updates comments
-setComments(result) {
-	this.setState({result})
-};
-
-showComments(e) {
-	const id = e.target.getAttribute('data-id');
-	this.setState({view: 'comments'});
-	this.fetchComments(id);
-};
-
 // Gets most recent stories from API
 fetchRecentStories(page = 0) {
+	console.log('fetching stories')
 	fetch(`https://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=points>=25&page=${page}`)
 	.then(response => response.json())
 	.then((result) => {
 		this.setStories(result)
-		console.log(result)
 	});
 };
 
@@ -102,16 +95,8 @@ fetchSearchTopStories(searchTerm) {
 	});
 };
 
-fetchComments(story) {
-
-	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
-	.then(response => response.json())
-	.then((result) => {
-		this.setComments(result)
-	});
-};
-
-componentDidMount() {
+componentWillMount() {
+	console.log('App will mount')
 	this.fetchRecentStories();
 };
 
@@ -134,6 +119,7 @@ this.setState({searchTerm: e.target.value});
 };
 
   render() {
+  	console.log('running render function')
      const { searchTerm, result } = this.state;
 
      if (!result) { return null; }
@@ -149,7 +135,6 @@ this.setState({searchTerm: e.target.value});
 	      <Table 
 	      list={result.hits}
 	      pattern={searchTerm}
-	      showComments={this.showComments}
 	      />
 
 	      <PageNavigation
@@ -158,6 +143,7 @@ this.setState({searchTerm: e.target.value});
 	);
 	}
 	else if (this.state.view === 'comments') {
+		console.log('view is comments')
 	return ( 
       <div className="page">
 
@@ -216,9 +202,9 @@ const PageNavigation = ({onClick}) => {
 // Table and button component
 
 const Table = ({list, pattern, showComments}) => {
-
+	console.log('inside table')
 	let filtered = list.filter(isSearched(pattern));
-	
+
 	return (
 					<main className="table">
 					<div className="table__header">
@@ -237,8 +223,13 @@ const Table = ({list, pattern, showComments}) => {
 					</div>
 				<div className="post-info-wrapper">
 				<span className="author">{item.author}</span>
-				
-				<span className="comments" data-id={item.objectID} onClick={showComments}>Comments: {item.num_comments}</span>
+				<Router>
+				<span className="comments" data-id={item.objectID} >
+				<Link to={"/comments:ID=" + item.objectID}>Comments: {item.num_comments}</Link>
+				<Route exact path={"/comments:ID=" + item.objectID} component={Comments}/>
+				</span>
+
+				</Router>
 				<span className ="points">+{item.points}</span>
 				<span>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
 				</div>

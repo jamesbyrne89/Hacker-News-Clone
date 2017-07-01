@@ -140,7 +140,7 @@ a:link, a:visited {
 }
 
 a:hover, .comments:hover {
-	color: #FF9500create ;
+	color: #FF9500;
 }
 
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
@@ -178,7 +178,6 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 	font-family: 'lato', sans-serif;
 	max-width: 1200px;
 }
-
 
 
 
