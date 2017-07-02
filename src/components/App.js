@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Comments from './Comments';
+//import Comments from './Comments';
 import {
   BrowserRouter as Router,
   Route,
@@ -49,6 +49,11 @@ const getHostname = function(href) {
     return l.hostname;
 };
 
+const parseHTML = function(html) {
+    var el = document.createElement('div');
+    el.innerHTML = html;
+    return el.textContent;
+}
 
 
 
@@ -188,7 +193,6 @@ const PageNavigation = ({onClick}) => {
 const Table = ({list, pattern, showComments}) => {
 
 	let filtered = list.filter(isSearched(pattern));
-	
 	return (
 					<main className="table">
 					<div className="table__header">
@@ -223,6 +227,39 @@ const Table = ({list, pattern, showComments}) => {
 			</main>
 	)
 };
+
+
+const Comments = ({ list, searchTerm }) => {
+	console.log(this.props)
+	return (
+
+	      <div className="page">
+
+	      <Search
+	      value={searchTerm}
+	      onChange={this.onSearchChange}/>
+
+ 
+		<main className="table">
+		<button className="back-btn">Back</button>
+			{ list.map(item =>
+
+				<div key={item.objectID} className="table-row">
+				<div>
+				<span className="comment-author">{item.author}</span>
+				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
+				
+				</div>
+			</div>
+			)}
+		</main>
+		</div>	
+		)
+}
+
+
+
+
 
 
 export default App;
