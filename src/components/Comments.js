@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Search from './App';
 
 const parseHTML = function(html) {
     var el = document.createElement('div');
@@ -11,65 +11,66 @@ const parseHTML = function(html) {
 // 
 class Comments extends Component {
 constructor(props) {
-super(props)
+  super(props);
+  this.state = {
+  	result: null,
+  };
 
-this.state = {
-	result: null,
-	}
-
-
-this.fetchComments = this.fetchComments.bind(this);
-this.setStories = this.setStories.bind(this);
-}
-
-
-
+  this.setStories = this.setStories.bind(this);
+  this.fetchComments = this.fetchComments.bind(this);
+};
 
 // Updates result of fetch
 setStories(result) {
 	this.setState({result});
-	console.log(this.state)
 };
 
-fetchComments(page = 0) {
-	fetch(`https://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=points>=25&page=${page}`)
-  	.then(response => response.json())
-  	.then((result) => {
-  		this.setState(result)
-  		console.log(result)
-  	});
+fetchComments(story) {
+	console.log('fetching comments')
+	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
+	.then(response => response.json())
+	.then((result) => {
+		this.setComments(result)
+	});
 };
+
 
 componentWillMount() {
 	console.log('comments will mount')
 	this.fetchComments();
-	console.log('comments will mount')
-}
+};
 
 render() {
-	console.log(this.state)
-let list = this.state.list;
+	console.log('rendering')
+	this.fetchComments();
+	return (
+		<div className="page">
+		<Search
+	      value={this.props.searchTerm}
+	      onChange={this.onSearchChange}/>
 
+		<AllComments list={this.props.list}/>
+		</div>
+		)
+	}
+}
+
+const AllComments = ({ list }) => {
 	return (
 		<main className="table">
 		<button className="back-btn">Back</button>
-	{ list.map(item =>
+			{ list.map(item =>
 
-			<div key={item.objectID} className="table-row">
+				<div key={item.objectID} className="table-row">
 				<div>
-					<span className="comment-author">{item.author}</span>
-					<span className='comment-text'>{parseHTML(item.comment_text)}</span>	
+				<span className="comment-author">{item.author}</span>
+				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
+				
 				</div>
 			</div>
-
 			)}
 		</main>
 		)
 }
 
-}
-
 export default Comments;
-
-
-
