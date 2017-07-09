@@ -229,32 +229,47 @@ const Table = ({list, pattern, showComments}) => {
 };
 
 
-const Comments = ({ list, searchTerm }) => {
-	console.log(this.props)
+class Comments extends Component {
+constructor(props) {
+  super(props);
+	
+  this.state = {
+  	result: null,
+  };
+
+}	
+
+	fetchComments(story) {
+	console.log('fetching comments')
+	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
+	.then(response => response.json())
+	.then((result) => {
+		this.setState({result});
+		console.log(this.state)
+	});
+};
+
+componentDidMount() {
+	this.fetchComments()
+}
+
+
+	render() {
+
+
+
+
 	return (
 
 	      <div className="page">
-
-	      <Search
-	      value={searchTerm}
-	      onChange={this.onSearchChange}/>
-
  
 		<main className="table">
 		<button className="back-btn">Back</button>
-			{ list.map(item =>
-
-				<div key={item.objectID} className="table-row">
-				<div>
-				<span className="comment-author">{item.author}</span>
-				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
-				
-				</div>
-			</div>
-			)}
+		
 		</main>
 		</div>	
 		)
+	}
 }
 
 
