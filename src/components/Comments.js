@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
 import Search from './App';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch
+} from 'react-router-dom';
+
 
 const parseHTML = function(html) {
     var el = document.createElement('div');
@@ -12,53 +19,64 @@ const parseHTML = function(html) {
 class Comments extends Component {
 constructor(props) {
   super(props);
+	
   this.state = {
   	result: null,
   };
 
-  this.setStories = this.setStories.bind(this);
-  this.fetchComments = this.fetchComments.bind(this);
-};
+this.fetchComments = this.fetchComments.bind(this);
+this.setStories = this.setStories.bind(this);
+}
 
-// Updates result of fetch
 setStories(result) {
-	this.setState({result});
-};
+this.setState({result})
+}	
 
-fetchComments(story) {
+	fetchComments(story) {
 	console.log('fetching comments')
+	console.log(story)
 	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
 	.then(response => response.json())
 	.then((result) => {
-		this.setComments(result)
+		this.setState({result});
+		console.log(this.state.result.hits)
 	});
 };
 
-
-componentWillMount() {
-	console.log('comments will mount')
-	this.fetchComments();
+onSearchChange(e) {
+this.setState({searchTerm: e.target.value});
 };
 
-render() {
-	console.log('rendering')
-	this.fetchComments();
+componentDidMount() {
+	console.log(this.props.location.state.id)
+	this.fetchComments(this.props.location.state.id);
+	console.log(this.state)
+}
+
+
+	render() {
+
+		let result = this.state.result;
+
+		 if (!result) { return null; }
 	return (
 		<div className="page">
-		<Search
-	      value={this.props.searchTerm}
-	      onChange={this.onSearchChange}/>
-
-		<AllComments list={this.props.list}/>
+			<header className="site-header">
+				<div id="logo">hn.</div>
+			</header>	
+			<CommentsTable list={result.hits}/>
 		</div>
 		)
 	}
 }
 
-const AllComments = ({ list }) => {
-	return (
+
+const CommentsTable = ({list}) => {
+
+return (
 		<main className="table">
-		<button className="back-btn">Back</button>
+					
+			<Link to='/'><button className="back-btn">Back</button></Link>
 			{ list.map(item =>
 
 				<div key={item.objectID} className="table-row">
@@ -72,5 +90,6 @@ const AllComments = ({ list }) => {
 		</main>
 		)
 }
+
 
 export default Comments;

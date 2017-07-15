@@ -3,9 +3,19 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
-} from 'react-router-dom'
+  Link,
+  Switch
+} from 'react-router-dom';
 
+
+const Default = () => {
+return (
+	<Switch>
+		<Route exact path='/' component={App} />
+		<Route exact path="/comments" component={Comments} />
+	</Switch>
+	)
+}
 
 const DEFAULT_QUERY = '';
 
@@ -62,7 +72,6 @@ class App extends Component {
 constructor(props) {
   super(props);
   this.state = {
-  	view: 'stories',
   	comments: null,
   	result: null,
   	searchTerm: DEFAULT_QUERY,
@@ -95,7 +104,6 @@ fetchRecentStories(page = 0) {
 	.then(response => response.json())
 	.then((result) => {
 		this.setStories(result)
-		console.log(result)
 	});
 };
 
@@ -120,7 +128,7 @@ console.log(this.state.page)
 if (e.target === nextBtn && this.state.page >= 0 ) {
 	this.setState({page: this.state.page + 1})
 	this.fetchRecentStories(this.state.page + 1)	
-}
+} 
 else if (e.target === prevBtn && this.state.page > 0) {
 	this.setState({page: this.state.page - 1})
 	this.fetchRecentStories(this.state.page - 1)		
@@ -142,6 +150,7 @@ this.setState({searchTerm: e.target.value});
 	      value={searchTerm}
 	      onChange={this.onSearchChange}/>
 	      
+
 	      <Table 
 	      list={result.hits}
 	      pattern={searchTerm}
@@ -173,22 +182,21 @@ const Search = ({ value, onChange, children }) => {
 	);
 };
 
-// Page buttons
 
 const PageNavigation = ({onClick}) => {
 	return(
 	<div className="btn-wrapper">
-		<button id="prev-page-btn" className="page-nav-btn" onClick={onClick}>Previous</button>
-		<button id="next-page-btn" className="page-nav-btn" onClick={onClick}>Next</button>
+		<button id="prev-page-btn" className="page-nav-btn" onClick={onClick}>
+		Previous
+		</button>
+		<button id="next-page-btn" className="page-nav-btn" onClick={onClick}>
+		Next
+		</button>
 	</div>
 	)
 };
 
 
-
-
-
-// Table and button component
 
 const Table = ({list, pattern, showComments}) => {
 
@@ -213,12 +221,12 @@ const Table = ({list, pattern, showComments}) => {
 					</div>
 				<div className="post-info-wrapper">
 				<span className="author">{item.author}</span>
-				<Router>
 				<span className="comments" data-id={item.objectID} onClick={showComments}>
-					<Link to={'/comments:id=' + item.objectID}>Comments: {item.num_comments}</Link>
-					<Route path={'/comments:id=' + item.objectID} component={Comments}/>
+					<Link to={{
+						pathname: '/comments',
+						state: {id: item.objectID}
+					}}>Comments: {item.num_comments}</Link>
 				</span>
-				</Router>
 				<span className ="points">+{item.points}</span>
 				<span>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
 				</div>
@@ -237,43 +245,63 @@ constructor(props) {
   	result: null,
   };
 
+this.fetchComments = this.fetchComments.bind(this);
+this.setStories = this.setStories.bind(this);
+}
+
+setStories(result) {
+this.setState({result})
 }	
 
 	fetchComments(story) {
 	console.log('fetching comments')
+	console.log(story)
 	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
 	.then(response => response.json())
 	.then((result) => {
 		this.setState({result});
-		console.log(this.state)
+		console.log(this.state.result.hits)
 	});
 };
 
 componentDidMount() {
-	this.fetchComments()
+	console.log(this.props.location.state.id)
+	this.fetchComments(this.props.location.state.id);
+	console.log(this.state)
 }
 
 
 	render() {
 
+		let result = this.state.result;
 
-
-
+		 if (!result) { return null; }
 	return (
-
-	      <div className="page">
- 
-		<main className="table">
-		<button className="back-btn">Back</button>
-		
-		</main>
-		</div>	
+			<CommentsTable list={result.hits}/>
 		)
 	}
 }
 
 
+const CommentsTable = ({list}) => {
 
+return (
+		<main className="table">
+					
+			<button className="back-btn">Back</button>
+			{ list.map(item =>
+
+				<div key={item.objectID} className="table-row">
+				<div>
+				<span className="comment-author">{item.author}</span>
+				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
+				
+				</div>
+			</div>
+			)}
+		</main>
+		)
+}
 
 
 
