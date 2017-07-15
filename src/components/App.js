@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 //import Comments from './Comments';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch
-} from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 
 
 
@@ -14,7 +9,6 @@ const DEFAULT_QUERY = '';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
-const DEFAULT_PAGE = 0;
 
 // let url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 
@@ -50,12 +44,6 @@ const getHostname = function(href) {
     l.href = href;
     return l.hostname;
 };
-
-const parseHTML = function(html) {
-    var el = document.createElement('div');
-    el.innerHTML = html;
-    return el.textContent;
-}
 
 
 
@@ -160,7 +148,7 @@ this.setState({searchTerm: e.target.value});
 const Search = ({ value, onChange, children }) => {
 	return (
 	<header className="site-header">
-	<div id="logo">hn.</div>
+	<Link className="router-link" to='/'><div id="logo">hn.</div></Link>
 		<form>
 			{children} <input
 			type="text"
@@ -215,7 +203,7 @@ const Table = ({list, pattern, showComments}) => {
 					<span className="comments" data-id={item.objectID} onClick={showComments}>
 						<Link to={{
 							pathname: `/comments/story=${item.objectID}`,
-							state: {id: item.objectID}
+							state: {id: item.objectID},
 						}}>Comments: {item.num_comments}</Link>
 					</span>
 					<span className ="points">+{item.points}</span>

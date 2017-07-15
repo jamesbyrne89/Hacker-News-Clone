@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
-//import Comments from './Comments';
+import React from 'react';
 import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch
+  Link
 } from 'react-router-dom';
 
 
@@ -13,7 +9,7 @@ const Error = () => {
 	return (
 		<div className="page">
 			<header className="site-header">
-				<div id="logo">hn.</div>
+				<Link className="router-link" to='/'><div id="logo">hn.</div></Link>
 			</header>	
 			<Error />
 		</div>

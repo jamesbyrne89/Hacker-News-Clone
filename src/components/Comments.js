@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import Search from './App';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const parseHTML = function(html) {
@@ -33,13 +27,10 @@ this.setState({result})
 }	
 
 	fetchComments(story) {
-	console.log('fetching comments')
-	console.log(story)
 	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
 	.then(response => response.json())
 	.then((result) => {
 		this.setState({result});
-		console.log(this.state.result.hits)
 	});
 };
 
@@ -48,9 +39,7 @@ this.setState({searchTerm: e.target.value});
 };
 
 componentDidMount() {
-	console.log(this.props.location.state.id)
 	this.fetchComments(this.props.location.state.id);
-	console.log(this.state)
 }
 
 
