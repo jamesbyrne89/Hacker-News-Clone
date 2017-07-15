@@ -142,12 +142,17 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 	transition: all 0.3s;
 }
 
-.page-nav-btn:hover {
+.page-nav-btn:hover, .back-btn:hover {
 	transition: all 0.3s;
 	background: #f46b45;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to left, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to left, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */	
 	border: solid 1px transparent;
+	color: #fff !important;
+}
+
+a:hover {
+	color: #fff !important;
 }
 
 .post-info-wrapper {
@@ -184,7 +189,7 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 		text-align: left;
 }
 
-a, a:visited {
+a:link, a:visited {
 	color: #fff;
 	text-decoration: none;
 	font-weight: bold;

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import Comments from './components/Comments';
+import Error from './components/Error';
 import {
   BrowserRouter as Router,
   Route,
@@ -16,6 +17,7 @@ ReactDOM.render((
   <Switch>
     <Route exact path='/' component={App} />
 	<Route exact path="/comments" component={Comments} />
+	<Route component={Error} />
 	</Switch>
   </Router>
 ), document.getElementById('root'));
