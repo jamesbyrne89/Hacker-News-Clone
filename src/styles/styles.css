@@ -151,8 +151,17 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 	color: #fff !important;
 }
 
+.back-btn {
+	margin-bottom: 30px;
+}
+
 a:hover {
 	color: #fff !important;
+}
+
+.router-link, .router-link:hover {
+	color: #fff !important;
+	   -webkit-text-fill-color: #fff;
 }
 
 .post-info-wrapper {

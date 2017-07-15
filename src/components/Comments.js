@@ -62,7 +62,7 @@ componentDidMount() {
 	return (
 		<div className="page">
 			<header className="site-header">
-				<div id="logo">hn.</div>
+				<Link className="router-link" to='/'><div id="logo">hn.</div></Link>
 			</header>	
 			<CommentsTable list={result.hits}/>
 		</div>
@@ -76,7 +76,7 @@ const CommentsTable = ({list}) => {
 return (
 		<main className="table">
 					
-			<Link to='/'><button className="back-btn">Back</button></Link>
+			<Link className="router-link" to='/'><button className="back-btn">Back</button></Link>
 			{ list.map(item =>
 
 				<div key={item.objectID} className="table-row">

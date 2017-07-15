@@ -16,7 +16,7 @@ ReactDOM.render((
   <Router>
   <Switch>
     <Route exact path='/' component={App} />
-	<Route exact path="/comments" component={Comments} />
+	<Route path="/comments" component={Comments} />
 	<Route component={Error} />
 	</Switch>
   </Router>

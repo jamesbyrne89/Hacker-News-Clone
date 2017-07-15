@@ -8,14 +8,6 @@ import {
 } from 'react-router-dom';
 
 
-const Default = () => {
-return (
-	<Switch>
-		<Route exact path='/' component={App} />
-		<Route exact path="/comments" component={Comments} />
-	</Switch>
-	)
-}
 
 const DEFAULT_QUERY = '';
 
@@ -202,106 +194,40 @@ const Table = ({list, pattern, showComments}) => {
 
 	let filtered = list.filter(isSearched(pattern));
 	return (
-					<main className="table">
-					<div className="table__header">
+			<main className="table">
+				<div className="table__header">
 					<div className="post-info-wrapper">
 						<span className="author-header">Posted by</span>
 						<span className="comments-header">Comments</span>
 						<span className="points-header">Points</span>
 						<span className="timestamp-header">Posted at</span>
-						</div>
 					</div>
-			{ 
-				
-				filtered.map(item =>
-				<div key={item.objectID} className="table-row">
-					<div className="article-title-wrapper">
-						<a href={item.url}>{item.title}</a>
-						<span className="article-url">{getHostname(item.url)}</span>
-					</div>
-				<div className="post-info-wrapper">
-				<span className="author">{item.author}</span>
-				<span className="comments" data-id={item.objectID} onClick={showComments}>
-					<Link to={{
-						pathname: '/comments',
-						state: {id: item.objectID}
-					}}>Comments: {item.num_comments}</Link>
-				</span>
-				<span className ="points">+{item.points}</span>
-				<span>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
 				</div>
-			</div>
-			)}
+				{ 
+					filtered.map(item =>
+					<div key={item.objectID} className="table-row">
+						<div className="article-title-wrapper">
+							<a href={item.url}>{item.title}</a>
+							<span className="article-url">{getHostname(item.url)}</span>
+						</div>
+					<div className="post-info-wrapper">
+					<span className="author">{item.author}</span>
+					<span className="comments" data-id={item.objectID} onClick={showComments}>
+						<Link to={{
+							pathname: `/comments/story=${item.objectID}`,
+							state: {id: item.objectID}
+						}}>Comments: {item.num_comments}</Link>
+					</span>
+					<span className ="points">+{item.points}</span>
+					<span>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
+					</div>
+				</div>
+				)}
 			</main>
 	)
 };
 
 
-class Comments extends Component {
-constructor(props) {
-  super(props);
-	
-  this.state = {
-  	result: null,
-  };
-
-this.fetchComments = this.fetchComments.bind(this);
-this.setStories = this.setStories.bind(this);
-}
-
-setStories(result) {
-this.setState({result})
-}	
-
-	fetchComments(story) {
-	console.log('fetching comments')
-	console.log(story)
-	fetch(`http://hn.algolia.com/api/v1/search?tags=comment,story_${story}&hitsPerPage=50`)
-	.then(response => response.json())
-	.then((result) => {
-		this.setState({result});
-		console.log(this.state.result.hits)
-	});
-};
-
-componentDidMount() {
-	console.log(this.props.location.state.id)
-	this.fetchComments(this.props.location.state.id);
-	console.log(this.state)
-}
-
-
-	render() {
-
-		let result = this.state.result;
-
-		 if (!result) { return null; }
-	return (
-			<CommentsTable list={result.hits}/>
-		)
-	}
-}
-
-
-const CommentsTable = ({list}) => {
-
-return (
-		<main className="table">
-					
-			<button className="back-btn">Back</button>
-			{ list.map(item =>
-
-				<div key={item.objectID} className="table-row">
-				<div>
-				<span className="comment-author">{item.author}</span>
-				<span className='comment-text'>{parseHTML(item.comment_text)}</span>
-				
-				</div>
-			</div>
-			)}
-		</main>
-		)
-}
 
 
 
