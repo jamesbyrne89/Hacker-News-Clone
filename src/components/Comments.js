@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import Error from './Error';
+import {
+	Link,
+	Route
+} from 'react-router-dom';
 
 
 const parseHTML = function(html) {
@@ -38,8 +42,10 @@ onSearchChange(e) {
 this.setState({searchTerm: e.target.value});
 };
 
-componentDidMount() {
-	this.fetchComments(this.props.location.state.id);
+componentWillMount() {
+	this.props.location.state ?
+	this.fetchComments(this.props.location.state.id) :
+	<Error />;
 }
 
 
@@ -65,7 +71,7 @@ const CommentsTable = ({list}) => {
 return (
 		<main className="table">
 					
-			<Link className="router-link" to='/'><button className="back-btn">Back</button></Link>
+			<Link className="router-link" to='/'><button className="btn back-btn">Back</button></Link>
 			{ list.map(item =>
 
 				<div key={item.objectID} className="table-row">

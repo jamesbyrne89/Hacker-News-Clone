@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-//import Comments from './Comments';
 import {  Link } from 'react-router-dom';
-
 
 
 const DEFAULT_QUERY = '';
@@ -69,14 +67,10 @@ constructor(props) {
 // Updates result of fetch
 setStories(result) {
 	this.setState({result});
+	
 };
 
 
-showComments(e) {
-	const id = e.target.getAttribute('data-id');
-	this.setState({view: 'comments'});
-	this.fetchComments(id);
-};
 
 // Gets most recent stories from API
 fetchRecentStories(page = 0) {
@@ -88,7 +82,6 @@ fetchRecentStories(page = 0) {
 };
 
 fetchSearchTopStories(searchTerm) {
-
 	fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
 	.then(response => response.json())
 	.then((result) => {
@@ -97,8 +90,13 @@ fetchSearchTopStories(searchTerm) {
 };
 
 
-componentDidMount() {
-	this.fetchRecentStories();
+componentWillMount() {
+	if (this.props.page) {
+		this.fetchRecentStories(this.props.page)
+	}
+	else {
+		this.fetchRecentStories();
+	}
 };
 
 onPageChange(e) {
@@ -114,14 +112,12 @@ else if (e.target === prevBtn && this.state.page > 0) {
 	this.fetchRecentStories(this.state.page - 1)		
 }
 };
-
 onSearchChange(e) {
 this.setState({searchTerm: e.target.value});
 };
 
   render() {
      const { searchTerm, result } = this.state;
-
      if (!result) { return null; }
     return (
       <div className="page">
@@ -137,7 +133,8 @@ this.setState({searchTerm: e.target.value});
 	      />
 
 	      <PageNavigation
-	      onClick={this.onPageChange} />
+	      onClick={this.onPageChange}
+	       />
  	</div>
 	);
 	}
@@ -163,19 +160,6 @@ const Search = ({ value, onChange, children }) => {
 };
 
 
-const PageNavigation = ({onClick}) => {
-	return(
-	<div className="btn-wrapper">
-		<button id="prev-page-btn" className="page-nav-btn" onClick={onClick}>
-		Previous
-		</button>
-		<button id="next-page-btn" className="page-nav-btn" onClick={onClick}>
-		Next
-		</button>
-	</div>
-	)
-};
-
 
 
 const Table = ({list, pattern, showComments}) => {
@@ -195,7 +179,7 @@ const Table = ({list, pattern, showComments}) => {
 					filtered.map(item =>
 					<div key={item.objectID} className="table-row">
 						<div className="article-title-wrapper">
-							<a href={item.url}>{item.title}</a>
+							<a href={item.url || `https://news.ycombinator.com/item?id=${item.objectID}`}>{item.title}</a>
 							<span className="article-url">{getHostname(item.url)}</span>
 						</div>
 					<div className="post-info-wrapper">
@@ -217,6 +201,19 @@ const Table = ({list, pattern, showComments}) => {
 
 
 
+
+const PageNavigation = ({onClick}) => {
+	return(
+	<div className="btn-wrapper">
+		<button id="prev-page-btn" className="btn page-nav-btn" onClick={onClick}>
+		Previous
+		</button>
+		<button id="next-page-btn" className="btn page-nav-btn" onClick={onClick}>
+		Next
+		</button>
+	</div>
+	)
+};
 
 
 export default App;

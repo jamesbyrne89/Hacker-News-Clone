@@ -129,7 +129,7 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 	margin-bottom: 100px;
 }
 
-.page-nav-btn, .back-btn {
+.btn {
 	border: solid 1px #fff;
 	background: none;
 	color: #fff;
@@ -142,7 +142,7 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
 	transition: all 0.3s;
 }
 
-.page-nav-btn:hover, .back-btn:hover {
+.btn:hover {
 	transition: all 0.3s;
 	background: #f46b45;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to left, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
@@ -198,7 +198,7 @@ a:hover {
 		text-align: left;
 }
 
-a:link, a:visited {
+a, a:visited {
 	color: #fff;
 	text-decoration: none;
 	font-weight: bold;
@@ -207,6 +207,15 @@ a:link, a:visited {
   -webkit-background-clip: text;
   -webkit-text-fill-color: #fff;
  	background: transparent;  /* fallback for old browsers */
+}
+
+
+
+a[href="none"], a[href="none"]:hover {
+	color: hotpink !important;
+	background: #fff !important;
+	-webkit-background-clip: text !important;
+	 -webkit-text-fill-color: transparent !important;
 }
 
 a:hover, .comments:hover {
@@ -250,6 +259,31 @@ a:hover, .comments:hover {
 	max-width: 1200px;
 }
 
+/* 404 Page */
+
+.not-found-wrapper {
+	height: calc(100vh - 70px);
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	padding-top: 20vh;
+}
+
+.not-found-text {
+	margin-bottom: 40px;
+	display: block;
+}
+
+.homepage-btn {
+	margin-bottom: 40px;
+	display: block;
+}
+
+.not-found-image {
+	margin-bottom: 40px;
+	margin-top: 20px;
+}
 
 
 
