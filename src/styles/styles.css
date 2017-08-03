@@ -106,8 +106,10 @@ input[type]:focus,
   display: flex;
   justify-content: flex-end;
   padding: 1em;
+  text-transform: uppercase;
   border: solid 2px #2C2C2E;
   margin-bottom: 50px;
+  color: #6d6e70;
 }
 
 .table {
@@ -219,11 +221,20 @@ a:hover {
   -webkit-text-fill-color: #fff;
 }
 
+.header__post-info-wrapper {
+  font-size: 0.75rem;
+  width: 40%;
+  display: flex;
+  letter-spacing: 0.25em;
+  justify-content: space-between;
+  padding-top: 0.4em;
+  margin-left: 7.5vw;
+}
+
 .post-info-wrapper {
   font-size: 0.875rem;
   width: 40%;
   display: flex;
-  flex: 1 0 500px;
   justify-content: space-between;
   padding-top: 0.4em;
   margin-left: 7.5vw;
@@ -238,7 +249,7 @@ a:hover {
 
 .comments a {
   font-size: inherit;
-  font-weight: 600;
+  font-weight: 400;
   display: inline-block;
   width: auto;
     cursor: pointer;

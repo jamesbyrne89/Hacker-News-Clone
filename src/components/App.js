@@ -168,7 +168,7 @@ const Table = ({list, pattern, showComments}) => {
 	return (
 			<main className="table">
 				<div className="table__header">
-					<div className="post-info-wrapper">
+					<div className="header__post-info-wrapper">
 						<span className="author-header">Posted by</span>
 						<span className="comments-header">Comments</span>
 						<span className="points-header">Points</span>
@@ -180,7 +180,7 @@ const Table = ({list, pattern, showComments}) => {
 					<div key={item.objectID} className="table-row">
 						<div className="article-title-wrapper">
 							<a href={item.url || `https://news.ycombinator.com/item?id=${item.objectID}`}>{item.title}</a>
-							<span className="article-url">({getHostname(item.url)})</span>
+							<span className="article-url">[ {getHostname(item.url)} ]</span>
 						</div>
 					<div className="post-info-wrapper">
 					<span className="author">{item.author}</span>
