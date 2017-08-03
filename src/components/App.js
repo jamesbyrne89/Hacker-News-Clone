@@ -207,6 +207,9 @@ const PageNavigation = ({onClick}) => {
 	<div className="btn-wrapper">
 		<button id="prev-page-btn" className="btn page-nav-btn" onClick={onClick}>
 		Previous
+		<button className="btn-inner">
+		Previous
+		</button>
 		</button>
 		<button id="next-page-btn" className="btn page-nav-btn" onClick={onClick}>
 		Next

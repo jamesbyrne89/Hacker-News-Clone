@@ -189,6 +189,7 @@ input[type]:focus,
 
 .btn {
   border: solid 1px #fff;
+  position: relative;
   background: none;
   color: #fff;
   margin: 10px;
@@ -199,12 +200,22 @@ input[type]:focus,
   border-radius: 20px;
 }
 
+.btn-inner {
+  opacity: 0;
+  position: absolute;
+    border: solid 1px #fff;
+}
+
+.btn:hover .btn-inner {
+  opacity: 1;
+}
+
+
 .btn:hover {
-  background: #f46b45;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #eea849, #f46b45);  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: transparent;
   border: solid 1px black;
   color: #fff !important;
+  opacity: 0;
 }
 
 .back-btn {
@@ -238,6 +249,12 @@ a:hover {
   justify-content: space-between;
   padding-top: 0.4em;
   margin-left: 7.5vw;
+}
+
+.comments, .timestamp {
+  white-space: nowrap;
+  overflow: hidden;
+  background: #151517;
 }
 
 .comments {
