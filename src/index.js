@@ -16,8 +16,8 @@ import './styles/styles.css';
 ReactDOM.render((
   <Router>
 	<Switch>
-	    <Route exact path='./' component={App} />
-		<Route path="./comments" component={Comments} />
+	    <Route exact path='/' component={App} />
+		<Route path="/comments" component={Comments} />
 		<Route component={Error} />
 	</Switch>
   </Router>

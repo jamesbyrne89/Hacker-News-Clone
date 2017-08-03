@@ -180,7 +180,7 @@ const Table = ({list, pattern, showComments}) => {
 					<div key={item.objectID} className="table-row">
 						<div className="article-title-wrapper">
 							<a href={item.url || `https://news.ycombinator.com/item?id=${item.objectID}`}>{item.title}</a>
-							<span className="article-url">{getHostname(item.url)}</span>
+							<span className="article-url">({getHostname(item.url)})</span>
 						</div>
 					<div className="post-info-wrapper">
 					<span className="author">{item.author}</span>
@@ -191,7 +191,7 @@ const Table = ({list, pattern, showComments}) => {
 						}}>Comments: {item.num_comments}</Link>
 					</span>
 					<span className ="points">+{item.points}</span>
-					<span>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
+					<span className='timestamp'>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
 					</div>
 				</div>
 				)}
