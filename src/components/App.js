@@ -100,17 +100,18 @@ componentWillMount() {
 };
 
 onPageChange(e) {
-const prevBtn = document.getElementById('prev-page-btn');
-const nextBtn = document.getElementById('next-page-btn');
-console.log(this.state.page)
-if (e.target === nextBtn && this.state.page >= 0 ) {
-	this.setState({page: this.state.page + 1})
-	this.fetchRecentStories(this.state.page + 1)	
-} 
-else if (e.target === prevBtn && this.state.page > 0) {
-	this.setState({page: this.state.page - 1})
-	this.fetchRecentStories(this.state.page - 1)		
-}
+	const prevBtn = document.getElementById('prev-page-btn');
+	const nextBtn = document.getElementById('next-page-btn');
+	if (e.target === nextBtn && this.state.page >= 0 ) {
+		this.setState({page: this.state.page + 1})
+		this.fetchRecentStories(this.state.page + 1)	
+	} 
+	else if (e.target === prevBtn && this.state.page > 0) {
+		this.setState({page: this.state.page - 1})
+		this.fetchRecentStories(this.state.page - 1);
+			
+	}
+	window.scrollTo(0, 0);	
 };
 onSearchChange(e) {
 this.setState({searchTerm: e.target.value});
@@ -185,10 +186,7 @@ const Table = ({list, pattern, showComments}) => {
 					<div className="post-info-wrapper">
 					<span className="author">{item.author}</span>
 					<span className="comments" data-id={item.objectID} onClick={showComments}>
-						<Link to={{
-							pathname: `/comments/story=${item.objectID}`,
-							state: {id: item.objectID},
-						}}>Comments: {item.num_comments}</Link>
+						<a href= {`https://news.ycombinator.com/item?id=${item.objectID}`}>Comments: {item.num_comments}</a>
 					</span>
 					<span className ="points">+{item.points}</span>
 					<span className='timestamp'>{item.created_at.substr(0,10)} {convertUnixTime(item.created_at_i)}</span>
@@ -207,9 +205,6 @@ const PageNavigation = ({onClick}) => {
 	<div className="btn-wrapper">
 		<button id="prev-page-btn" className="btn page-nav-btn" onClick={onClick}>
 		Previous
-		<button className="btn-inner">
-		Previous
-		</button>
 		</button>
 		<button id="next-page-btn" className="btn page-nav-btn" onClick={onClick}>
 		Next

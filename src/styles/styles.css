@@ -184,39 +184,72 @@ input[type]:focus,
 }
 
 .btn-wrapper {
+  margin: auto;
+  width: 20%;
   margin-bottom: 100px;
+  display: flex;
+  justify-content: space-around;
 }
 
-.btn {
-  border: solid 1px #fff;
-  position: relative;
-  background: none;
+.btn,
+.btn:before {
   color: #fff;
-  margin: 10px;
-  padding: 0.25em 0;
-  width: 120px;
+  
+
+  
   height: 35px;
-  cursor: pointer;
+  border: solid 1px #fff;
   border-radius: 20px;
 }
 
-.btn-inner {
-  opacity: 0;
-  position: absolute;
-    border: solid 1px #fff;
+
+
+.btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+    left: 0;
+    width: 120px;
+  background: linear-gradient(#000, #000);
+  cursor: pointer;
 }
 
-.btn:hover .btn-inner {
+.btn:before {
+  position: absolute;
+  display: block;
+  opacity: 0;
+  top: -1.5px;
+    left: -1.5px;
+    width: 120px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f46b45;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #eea849, #f46b45);  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  transition: 0.3s;
+}
+
+#next-page-btn:before {
+content: 'Next';
+}
+
+#prev-page-btn:before {
+content: 'Previous';
+}
+
+.btn:hover:before {
   opacity: 1;
 }
 
-
 .btn:hover {
-  background: transparent;
-  border: solid 1px black;
-  color: #fff !important;
-  opacity: 0;
+  border: solid 1px #000;
 }
+
+
 
 .back-btn {
   margin-bottom: 30px;
