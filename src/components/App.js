@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import rebase from 're-base';
+import db, { HN_DATABASE_URL, HN_API_VERSION } from '../db/Database';
 
 const DEFAULT_QUERY = '';
 
@@ -51,7 +53,8 @@ class App extends Component {
       comments: null,
       result: null,
       searchTerm: DEFAULT_QUERY,
-      page: 0
+      page: 0,
+      stories: null
     };
 
     this.setStories = this.setStories.bind(this);
@@ -75,6 +78,19 @@ class App extends Component {
       .then(result => {
         this.setStories(result);
       });
+
+    //   let storiesArr = [];
+    // fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/topstories.json`)
+    //   .then(resp => resp.json())
+    //   .then(resp =>
+    //     resp
+    //       .forEach(id => {
+    //         fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/item/${id}.json`)
+    //           .then(response => response.json())
+    //           .then(data => storiesArr.push(data));
+    //       })
+    //       .then(() => this.setState({ loading: false, stories: storiesArr }))
+    //   );
   }
 
   fetchSearchTopStories(searchTerm) {
@@ -91,6 +107,12 @@ class App extends Component {
     } else {
       this.fetchRecentStories();
     }
+
+    db.bindToState('/', {
+      context: this,
+      state: 'stories',
+      asArray: true
+    });
   }
 
   onPageChange(e) {
