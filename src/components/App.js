@@ -54,7 +54,8 @@ class App extends Component {
       result: null,
       searchTerm: DEFAULT_QUERY,
       page: 0,
-      stories: null
+      recentStories: [],
+      loading: true
     };
 
     this.setStories = this.setStories.bind(this);
@@ -79,18 +80,19 @@ class App extends Component {
         this.setStories(result);
       });
 
-    //   let storiesArr = [];
-    // fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/topstories.json`)
-    //   .then(resp => resp.json())
-    //   .then(resp =>
-    //     resp
-    //       .forEach(id => {
-    //         fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/item/${id}.json`)
-    //           .then(response => response.json())
-    //           .then(data => storiesArr.push(data));
-    //       })
-    //       .then(() => this.setState({ loading: false, stories: storiesArr }))
-    //   );
+    fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/topstories.json`)
+      .then(resp => resp.json())
+      .then(resp =>
+        Promise.all(
+          resp.map(id =>
+            fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/item/${id}.json`)
+              .then(resp => resp.json())
+              .then(resp => resp)
+          )
+        )
+          .then(data => this.setState({ recentStories: data, loading: false }))
+          .catch(err => console.log(err.message))
+      );
   }
 
   fetchSearchTopStories(searchTerm) {
@@ -132,7 +134,7 @@ class App extends Component {
   }
 
   render() {
-    const { searchTerm, result } = this.state;
+    const { searchTerm, result, loading } = this.state;
     if (!result) {
       return null;
     }
@@ -169,8 +171,9 @@ const Search = ({ value, onChange, children }) => {
   );
 };
 
-const Table = ({ list, pattern, showComments }) => {
+const Table = ({ list, pattern, showComments, loading }) => {
   let filtered = list.filter(isSearched(pattern));
+
   return (
     <main className="table">
       <div className="table__header">
