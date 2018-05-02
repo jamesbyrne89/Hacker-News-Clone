@@ -204,8 +204,7 @@ const Table = ({ pattern, showComments, loading, stories }) => {
             <span className="author"> {item.author} </span>{' '}
             <span className="comments" data-id={item.id} onClick={showComments}>
               <a href={`https://news.ycombinator.com/item?id=${item.id}`}>
-                {' '}
-                Comments: {item.num_comments}{' '}
+                Comments: {item.descendants}
               </a>{' '}
             </span>{' '}
             <span className="points"> +{item.score} </span>{' '}
