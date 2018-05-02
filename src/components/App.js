@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import rebase from 're-base';
 import db, { HN_DATABASE_URL, HN_API_VERSION } from '../db/Database';
+import Particles from 'react-particles-js';
 
 const DEFAULT_QUERY = '';
 
@@ -72,13 +73,13 @@ class App extends Component {
 
   // Gets most recent stories from API
   fetchRecentStories(page = 0) {
-    fetch(
-      `https://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=points>=25&page=${page}`
-    )
-      .then(response => response.json())
-      .then(result => {
-        this.setStories(result);
-      });
+    // fetch(
+    //   `https://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=points>=25&page=${page}`
+    // )
+    //   .then(response => response.json())
+    //   .then(result => {
+    //     this.setStories(result);
+    //   });
 
     fetch(`${HN_DATABASE_URL}/${HN_API_VERSION}/topstories.json`)
       .then(resp => resp.json())
@@ -90,7 +91,10 @@ class App extends Component {
               .then(resp => resp)
           )
         )
-          .then(data => this.setState({ stories: data, loading: false }))
+          .then(data => {
+            console.log(data);
+            this.setState({ stories: data, loading: false });
+          })
           .catch(err => console.log(err.message))
       );
   }
@@ -135,14 +139,13 @@ class App extends Component {
 
   render() {
     const { searchTerm, result, loading, stories } = this.state;
-    console.log(stories);
-    if (!stories) {
-      return null;
-    }
-    return (
+    console.log('loading', loading);
+    return loading ? (
+      <Particles />
+    ) : (
       <div className="page">
         <Search value={searchTerm} onChange={this.onSearchChange} />
-        <Table stories={stories} list={result.hits} pattern={searchTerm} />
+        <Table stories={stories} pattern={searchTerm} />
         <PageNavigation onClick={this.onPageChange} />{' '}
       </div>
     );
@@ -172,8 +175,8 @@ const Search = ({ value, onChange, children }) => {
   );
 };
 
-const Table = ({ list, pattern, showComments, loading, stories }) => {
-  let filtered = list.filter(isSearched(pattern));
+const Table = ({ pattern, showComments, loading, stories }) => {
+  let filtered = stories.filter(isSearched(pattern));
   return (
     <main className="table">
       <div className="table__header">
@@ -199,22 +202,14 @@ const Table = ({ list, pattern, showComments, loading, stories }) => {
           </div>{' '}
           <div className="post-info-wrapper">
             <span className="author"> {item.author} </span>{' '}
-            <span
-              className="comments"
-              data-id={item.objectID}
-              onClick={showComments}
-            >
-              <a href={`https://news.ycombinator.com/item?id=${item.objectID}`}>
+            <span className="comments" data-id={item.id} onClick={showComments}>
+              <a href={`https://news.ycombinator.com/item?id=${item.id}`}>
                 {' '}
                 Comments: {item.num_comments}{' '}
               </a>{' '}
             </span>{' '}
-            <span className="points"> +{item.points} </span>{' '}
-            <span className="timestamp">
-              {' '}
-              {item.created_at.substr(0, 10)}{' '}
-              {convertUnixTime(item.created_at_i)}{' '}
-            </span>{' '}
+            <span className="points"> +{item.score} </span>{' '}
+            <span className="timestamp"> {convertUnixTime(item.time)} </span>{' '}
           </div>{' '}
         </div>
       ))}{' '}
