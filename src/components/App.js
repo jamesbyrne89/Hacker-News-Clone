@@ -90,7 +90,7 @@ class App extends Component {
               .then(resp => resp)
           )
         )
-          .then(data => this.setState({ recentStories: data, loading: false }))
+          .then(data => this.setState({ stories: data, loading: false }))
           .catch(err => console.log(err.message))
       );
   }
@@ -134,14 +134,15 @@ class App extends Component {
   }
 
   render() {
-    const { searchTerm, result, loading } = this.state;
-    if (!result) {
+    const { searchTerm, result, loading, stories } = this.state;
+    console.log(stories);
+    if (!stories) {
       return null;
     }
     return (
       <div className="page">
         <Search value={searchTerm} onChange={this.onSearchChange} />
-        <Table list={result.hits} pattern={searchTerm} />
+        <Table stories={stories} list={result.hits} pattern={searchTerm} />
         <PageNavigation onClick={this.onPageChange} />{' '}
       </div>
     );
@@ -171,9 +172,8 @@ const Search = ({ value, onChange, children }) => {
   );
 };
 
-const Table = ({ list, pattern, showComments, loading }) => {
+const Table = ({ list, pattern, showComments, loading, stories }) => {
   let filtered = list.filter(isSearched(pattern));
-
   return (
     <main className="table">
       <div className="table__header">
@@ -184,13 +184,12 @@ const Table = ({ list, pattern, showComments, loading }) => {
           <span className="timestamp-header"> Posted at </span>{' '}
         </div>{' '}
       </div>
-      {filtered.map(item => (
-        <div key={item.objectID} className="table-row">
+      {stories.map(item => (
+        <div key={item.id} className="table-row">
           <div className="article-title-wrapper">
             <a
               href={
-                item.url ||
-                `https://news.ycombinator.com/item?id=${item.objectID}`
+                item.url || `https://news.ycombinator.com/item?id=${item.id}`
               }
             >
               {' '}
