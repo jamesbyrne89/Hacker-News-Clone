@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://jamesbyrne89.github.io/Hacker-News-Clone",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "firebase": "^6.3.4",
     "node-sass-chokidar": "0.0.3",
     "re-base": "^3.2.2",
